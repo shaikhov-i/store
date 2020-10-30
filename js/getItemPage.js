@@ -53,11 +53,15 @@ export const generateItemPage = () => {
                 btnAddWishlist.classList.remove('contains-wishlist');
             }
         }
-
         btnAddWishlist.addEventListener('click', function() {
             userData.wishList = id;
             checkWishList();
         });
+
+        btnGood.addEventListener('click', function() {
+            userData.cartList = id;
+        });
+        checkWishList();
     }
 
     if(location.hash) {

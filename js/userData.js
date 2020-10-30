@@ -1,7 +1,8 @@
+import {getLocalStorage, setLocalStorage} from './storage.js';
 'use strict';
 
 export const userData = {
-    wishListData: ['idd005', 'idd100', 'idd077', 'idd033'],
+    wishListData: getLocalStorage('wishList'),
     get wishList() {
         console.log(this.wishListData);
         return this.wishListData;
@@ -13,20 +14,25 @@ export const userData = {
         } else {
             this.wishListData.push(data);
         }
+        setLocalStorage('wishList', this.wishList);
     },
-    cartListData: [
-        {
-            id: 'idd015',
-            count: 3
-        },
-        {
-            id: 'idd045',
-            count: 1
-        },
-        {
-            id: 'idd095',
-            count: 2
+    cartListData: getLocalStorage('cartList'),
+    get cartList() {
+        return this.cartListData;
+    },
+    set cartList(id) {
+        let obj = this.cartListData.find(item => item.id === id);
+        if(obj) {
+            obj.count++;
+        } else {
+            obj = {
+                id,
+                count : 1
+            }
+            this.cartListData.push(obj);
         }
-    ]
+        console.log(obj);
+        setLocalStorage('cartList', this.cartList);
+    }
 }
 

@@ -1,21 +1,22 @@
 import {getData} from './getData.js';
+import {userData} from './userData.js';
 'use strict';
 
-const wishList = ['idd005', 'idd100', 'idd077', 'idd033'];
-const cartList = [
-   {
-       id: 'idd015',
-       count: 3
-   },
-   {
-    id: 'idd045',
-    count: 1
-   },
-   {
-    id: 'idd095',
-    count: 2
-   }
-];
+const wishList = [];
+// const cartList = [
+//    {
+//        id: 'idd015',
+//        count: 3
+//    },
+//    {
+//     id: 'idd045',
+//     count: 1
+//    },
+//    {
+//     id: 'idd095',
+//     count: 2
+//    }
+// ];
 
 export function generateGoodsPage() {
     if(location.pathname.includes('goods') && location.search) {
@@ -50,7 +51,7 @@ export function generateGoodsPage() {
                             <span class="goods-item__price-value">${price}</span>
                             <span class="goods-item__currency"> ₽</span>
                         </p>
-                        <button class="btn btn-add-card" aria-label="Добравить в корзину" data-idd="idd001"></button>
+                        <button class="btn btn-add-card" aria-label="Добравить в корзину" data-idd="${id}"></button>
                     </article>
                 </a>
             </li>`);
@@ -61,11 +62,19 @@ export function generateGoodsPage() {
             getData.search(value, generateCards);
             mainHeader.innerHTML = `Результаты поиска: ${value}`;
         } else if(value === 'wishlist') {
-            getData.wishList(wishList, generateCards);
+            getData.wishList(userData.wishList, generateCards);
             mainHeader.innerHTML = `Список желаний`;
         }  else if(prop === 'cat' || prop === 'subcat'){
             getData.category(prop, value, generateCards);
             mainHeader.textContent = value;
         }
+
+        goodsList.addEventListener('click', function(event) {
+            let btnAddCard = event.target.closest('.btn-add-card');
+            if(btnAddCard) {
+                event.preventDefault();
+                userData.cartList = btnAddCard.dataset.idd;
+            }
+        });
     }
 }
